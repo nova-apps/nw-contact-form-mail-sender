@@ -6,6 +6,7 @@ https://us-central1-nw-contact-form-mail-sender.cloudfunctions.net/sendEmailFrom
 with the following data structure:
 
 const data = {
+
     name: 'John Doe',
     
     email: 'john@example.com',
@@ -17,3 +18,10 @@ const data = {
     subject: 'XRS contact form'
     
 };
+
+
+
+////
+TO UPDATE FUNCTIONS:
+-after making changes in index.js, execute:
+firebase deploy --only functions
