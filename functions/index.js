@@ -18,7 +18,7 @@ exports.sendEmailFromContactForm = functions.https.onRequest((request, response)
 
         const { name, email, message, to, subject } = request.body;
 
-        let data = "Nombre: " + name + " \nEmail:" + email + "\nMensaje:" + message;
+        let data = "Nombre: " + name + " \nEmail: " + email + "\nMensaje: " + message;
 
         let mailOptions = {
             from: "mensajes@novaworks.com.ar",
@@ -27,13 +27,20 @@ exports.sendEmailFromContactForm = functions.https.onRequest((request, response)
             text: data
         };
 
+        if(email.indexOf('@') === -1 || email.indexOf('.') === -1){
+            return response.status(400).json({ error: "Email inválido" });
+        }
 
-        return transporter.sendMail(mailOptions, (error) => {
-            if (error) {
-                console.log(error)
-                return response.status(500).send(error.message);
-            }
-            return response.status(200).send('Email sent');
-        });
+        if(!name || !email || !message || !to || !subject){
+            return response.status(400).json({ error: "Faltan datos" });
+        } else {
+            return transporter.sendMail(mailOptions, (error) => {
+                if (error) {
+                    console.log(error)
+                    return response.status(500).send(error.message);
+                }
+                return response.status(200).send('Email sent');
+            });
+        }
     });
 });
